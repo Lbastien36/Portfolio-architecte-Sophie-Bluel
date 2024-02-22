@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Sophie Bluel - Architecte d'intérieur</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
+		rel="stylesheet">
+	<meta name="description" content="">
+	<link rel="stylesheet" href="./assets/style.css">
+</head>
+
+<body>
+	<header>
+		<div id="banniere">
+
+		</div>
+		<div id="divheader" class="marginheader">
+			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+			<nav>
+				<ul>
+					<li>projets</li>
+					<li>contact</li>
+					<a href="./login.html">
+						<li id="login">login</li>
+					</a>
+					<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<main>
+		<section id="introduction">
+			<figure>
+				<img src="./assets/images/sophie-bluel.png" alt="">
+			</figure>
+			<article>
+				<h2>Designer d'espace</h2>
+				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
+					finale du chantier.</p>
+				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les
+					couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du
+					chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG,
+					décorateur(trice)</p>
+			</article>
+		</section>
+		<section id="portfolio">
+			<div class="divprojet">
+				<h2 class="mesprojets">Mes projets</h2>
+
+
+				<a href="#modale" class="modifier" style="display: none;"><i
+						class="fa-regular fa-pen-to-square iconeprojet"></i>Modifier</a>
+			</div>
+
+			<aside id="modale" class="modale" role="dialog" style="display: none;">
+				<div class="modale-wrapper">
+
+					<i class="fa-solid fa-xmark fermermodale"></i>
+					<div id="nouvellediv" style="display: none;">
+
+						<i class="fa-solid fa-arrow-left retourmodale"></i>
+						<h2 class="gallerie">Ajout photo</h2>
+
+						<form id="formAjouterphoto">
+							<div class="ajouterphotoform">
+								<i class="fa-regular fa-image iconeimage"></i>
+								<label for="photo" class="labelphoto">+ Ajouter photo</label>
+								<input type="file" value="Ajouter photo" name="photo" id="photo" accept=".jpg, .png" required>
+								<img id="preview" src="#" alt="">
+								<p class="jpg">jpg, png: 4mo max</p>
+							</div>
+							<div class="divform">
+								<label for="titre" class="label">Titre</label>
+								<input type="text" name="titre" id="titre" class="inputform" required>
+							</div>
+							<div class="divform">
+								<label for="categorie" class="label">Catégorie</label>
+								<select name="categorie" id="categorie" class="inputform" required>
+									<option value="" selected disabled hidden></option>
+									<option value="1" class="inputform">Objets</option>
+									<option value="2" class="inputform">Appartements</option>
+									<option value="3" class="inputform">Hotels & Restaurants</option>
+									<input type="submit" value="Valider" class="boutonvalider"
+										style="background: #A7A7A7; width:237px; margin-top: 60px;"></input>
+								</select>
+							</div>
+						</form>
+						<div class="trait2"></div>
+					</div>
+
+					<div id="cachergalleriemodale">
+						<h2 class="gallerie">Galerie photo</h2>
+
+						<div id="galleriemodale">
+
+						</div>
+						<div class="trait"></div>
+						<p id="ajouterphoto">Ajouter une photo</p>
+
+
+					</div>
+				</div>
+
+			</aside>
+
+
+
+
+			<div class=" categories" id="categories">
+
+			</div>
+
+			<div class="gallery" id="gallery">
+
+			</div>
+		</section>
+		<section id="contact">
+			<h2>Contact</h2>
+			<p>Vous avez un projet ? Discutons-en !</p>
+			<form action="#" method="post">
+				<label for="name">Nom</label>
+				<input type="text" name="name" id="name">
+				<label for="email">Email</label>
+				<input type="email" name="email" id="email">
+				<label for="message">Message</label>
+				<textarea name="message" id="message" cols="30" rows="10"></textarea>
+				<input type="submit" value="Envoyer">
+			</form>
+		</section>
+	</main>
+
+	<footer>
+		<nav>
+			<ul>
+				<li>Mentions Légales</li>
+			</ul>
+		</nav>
+	</footer>
+	<script src="index.js"></script>
+	<script src="https://kit.fontawesome.com/fb0aa9ab82.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
