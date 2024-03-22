@@ -550,7 +550,6 @@ input {
 }
 
 .boutonvalider {
-
 	width: 179px;
 	height: 36px;
 	display: flex;
@@ -611,7 +610,7 @@ input {
 	font-weight: 400;
 	color: #444444;
 	bottom: 28px;
-    position: relative;
+	position: relative;
 }
 
 .inputform {
@@ -645,4 +644,14 @@ input {
 	height: 169px;
 	bottom: 3.5px;
 	position: relative;
+}
+
+.erreur2 {
+	color: red;
+	font-weight: 500;
+	font-size: 14px;
+	text-align: center;
+	position: absolute;
+	left: 415px;
+	top: 635px;
 }

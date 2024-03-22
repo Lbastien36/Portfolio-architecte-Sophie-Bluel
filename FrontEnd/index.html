@@ -66,21 +66,21 @@
 						<i class="fa-solid fa-arrow-left retourmodale"></i>
 						<h2 class="gallerie">Ajout photo</h2>
 
-						<form id="formAjouterphoto">
+						<form name="formAjouterphoto" id="formAjouterphoto">
 							<div class="ajouterphotoform">
 								<i class="fa-regular fa-image iconeimage"></i>
 								<label for="photo" class="labelphoto">+ Ajouter photo</label>
-								<input type="file" value="Ajouter photo" name="photo" id="photo" accept=".jpg, .png" required>
+								<input type="file" value="Ajouter photo" name="photo" id="photo" class="form" accept=".jpg, .png">
 								<img id="preview" src="#" alt="">
 								<p class="jpg">jpg, png: 4mo max</p>
 							</div>
 							<div class="divform">
 								<label for="titre" class="label">Titre</label>
-								<input type="text" name="titre" id="titre" class="inputform" required>
+								<input type="text" name="titre" id="titre" class="inputform form">
 							</div>
 							<div class="divform">
 								<label for="categorie" class="label">Catégorie</label>
-								<select name="categorie" id="categorie" class="inputform" required>
+								<select name="categorie" id="categorie" class="inputform form">
 									<option value="" selected disabled hidden></option>
 									<option value="1" class="inputform">Objets</option>
 									<option value="2" class="inputform">Appartements</option>
@@ -88,6 +88,7 @@
 									<input type="submit" value="Valider" class="boutonvalider"
 										style="background: #A7A7A7; width:237px; margin-top: 60px;"></input>
 								</select>
+								<p class="erreur2" style="display: none;">Veuillez remplir tout les champs</p>
 							</div>
 						</form>
 						<div class="trait2"></div>

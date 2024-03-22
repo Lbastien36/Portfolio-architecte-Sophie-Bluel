@@ -146,6 +146,14 @@ const openModal = (e) => {
     modale.querySelector(".modale-wrapper").addEventListener("click", stopPropagation)
 }
 
+// Réinitialisation de l'image de preview
+
+const resetimage = (e) => {
+    const preview = document.getElementById("preview")
+    preview.src = ""
+}
+
+
 //Fermeture de la modale "modifier"
 
 const closemodal = (e) => {
@@ -158,6 +166,15 @@ const closemodal = (e) => {
 
     document.getElementById("nouvellediv").setAttribute("style", "display:none")
     document.getElementById("cachergalleriemodale").setAttribute("style", "display:grid")
+
+
+    document.getElementById("formAjouterphoto").reset()
+    resetimage()
+    document.querySelector(".labelphoto").setAttribute("style", "opacity:100;height:36px;position: static;")
+    document.querySelector(".iconeimage").setAttribute("style", "display:block")
+    document.querySelector(".jpg").setAttribute("style", "display:block")
+    document.querySelector(".boutonvalider").setAttribute("style", "background:#A7A7A7;width:237px; margin-top: 60px;")
+    document.querySelector(".erreur2").setAttribute("style", "display:none")
 
     modale.removeEventListener("click", closemodal)
     modale.querySelector(".fermermodale").removeEventListener("click", closemodal)
@@ -195,46 +212,56 @@ fetch("http://localhost:5678/api/works")
 
         document.getElementById("galleriemodale").innerHTML = affichage
 
-        //Ajout des boutons supprimer sur chacun des travaux
+        //Ajout des boutons supprimer sur chacun des travaux grâce à une fonction
 
-        document.querySelectorAll(".boutonsupprimer").forEach(bouton => {
+        const Suppression = () => {
+            document.querySelectorAll(".boutonsupprimer").forEach(bouton => {
 
 
-            bouton.addEventListener("click", (e) => {
-                console.log("bla")
-                const token = localStorage.getItem("token")
+                bouton.addEventListener("click", (e) => {
+                    console.log("bla")
+                    const token = localStorage.getItem("token")
 
-                const id = e.target.getAttribute("id")
-                console.log(id)
+                    const id = e.target.getAttribute("id")
+                    console.log(id)
 
-                console.log(e)
+                    console.log(e)
 
-                //Suppression des travaux de l'API
+                    //Suppression des travaux de l'API
 
-                fetch("http://localhost:5678/api/works/" + id, {
+                    if (id == null) { }
+                    else {
+                        fetch("http://localhost:5678/api/works/" + id, {
 
-                    method: "DELETE",
-                    body: null,
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': 'Bearer ' + token,
-                    },
+                            method: "DELETE",
+                            body: null,
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': 'Bearer ' + token,
+                            },
+
+                        })
+
+                            //Supression des travaux de la gallerie et de la modale
+
+                            .then((res) => {
+
+                                e.target.parentNode.parentNode.remove()
+                                document.querySelector(`[data-id="${id}"]`).remove()
+                            }
+
+                            )
+                            .catch(err => console.log(err))
+                    }
+
 
                 })
 
-                    //Supression des travaux de la gallerie et de la modale
-
-                    .then((res) => {
-
-                        e.target.parentNode.parentNode.remove()
-                        document.querySelector(`[data-id="${id}"]`).remove()
-                    }
-
-                    )
-                    .catch(err => console.log(err))
             })
+        }
 
-        })
+        Suppression()
+
 
         //Fonction de prévisualisation des images avant l'envoi
 
@@ -242,6 +269,7 @@ fetch("http://localhost:5678/api/works")
             const preview = document.getElementById("preview")
             preview.src = URL.createObjectURL(e.target.files[0])
         }
+
 
         //Mise en place du formulaire d'ajout de travaux
 
@@ -262,15 +290,30 @@ fetch("http://localhost:5678/api/works")
                 document.querySelector(".jpg").setAttribute("style", "display:none")
             })
 
+
+
+
             //Mise en place du formulaire de soumission de travaux
+
+            document.getElementById("photo")
+            document.getElementById("titre")
+            document.getElementById("categorie")
+
+            document.querySelectorAll(".form").forEach(form => form.addEventListener("change", () => {
+                if (photo.value !== "" && titre.value !== "" && categorie.value !== "") {
+                    document.querySelector(".boutonvalider").setAttribute("style", "background:#1D6154;width:237px; margin-top: 60px;")
+                } else {
+                    document.querySelector(".boutonvalider").setAttribute("style", "background:#A7A7A7;width:237px; margin-top: 60px;")
+                }
+            }))
 
             const formAjouterphoto = document.getElementById("formAjouterphoto")
 
             formAjouterphoto.addEventListener("submit", (e) => {
 
                 e.preventDefault()
-                const token = localStorage.getItem("token")
 
+                const token = localStorage.getItem("token")
 
                 let input = document.querySelector('input[type="file"]')
                 console.log(input.files)
@@ -280,43 +323,72 @@ fetch("http://localhost:5678/api/works")
                 formData.append('title', titre.value)
                 formData.append('category', categorie.value)
 
-                //Ajout de travaux sur l'API
+                const photoform = document.getElementById("photo").value
+                const titreform = document.getElementById("titre").value
+                const categorieform = document.getElementById("categorie").value
 
-                fetch("http://localhost:5678/api/works", {
+                //Vérification si le formulaire est remplit correctement
 
-                    method: "POST",
+                if (photoform == "" || titreform == "" || categorieform == "") {
 
-                    body: formData,
+                    document.querySelector(".erreur2").setAttribute("style", "display:block")
 
-                    headers: {
+                } else {
+                    //Ajout de travaux sur l'API
 
-                        'Authorization': 'Bearer ' + token,
-                    }
+                    fetch("http://localhost:5678/api/works", {
 
-                })
+                        method: "POST",
 
-                    .then((res) => res.json())
+                        body: formData,
 
-                    //Ajout des travaux dans la galllerie et dans la modale
+                        headers: {
 
-                    .then(data => {
+                            'Authorization': 'Bearer ' + token,
+                        }
 
-                        let affichage = `<figure data-id="${data.id}">
+                    })
+
+                        .then((res) => res.json())
+
+                        //Ajout des travaux dans la galllerie et dans la modale
+
+                        .then(data => {
+
+                            let affichage = `<figure data-id="${data.id}">
                         <img src="${data.imageUrl}" alt="${data.title}">
                         <figcaption>${data.title}</figcaption>
                         </figure> `
 
-                        document.getElementById("gallery").insertAdjacentHTML("beforeend", affichage)
-                        console.log(data)
+                            let affichage2 = `<figure>
+                        <bouton class="boutonsupprimer"><i class="fa-solid fa-trash-can" id="${data.id}" ></i></bouton>
+                        <img src="${data.imageUrl}" alt="${data.title}" class="imagemodale">
+                        </figure>
+                        
+                        `
 
-                    })
+                            document.getElementById("gallery").insertAdjacentHTML("beforeend", affichage)
+                            document.getElementById("galleriemodale").insertAdjacentHTML("beforeend", affichage2)
+                            console.log(data)
+
+                            Suppression()
+                        })
+                }
 
 
             })
 
+
             //Bouton retour de la modale
 
             document.querySelector(".retourmodale").addEventListener("click", () => {
+                document.getElementById("formAjouterphoto").reset()
+                resetimage()
+                document.querySelector(".labelphoto").setAttribute("style", "opacity:100;height:36px;position: static;")
+                document.querySelector(".iconeimage").setAttribute("style", "display:block")
+                document.querySelector(".jpg").setAttribute("style", "display:block")
+                document.querySelector(".boutonvalider").setAttribute("style", "background:#A7A7A7;width:237px; margin-top: 60px;")
+                document.querySelector(".erreur2").setAttribute("style", "display:none")
 
                 document.getElementById("nouvellediv").setAttribute("style", "display:none")
                 document.getElementById("cachergalleriemodale").setAttribute("style", "display:grid")
@@ -325,7 +397,5 @@ fetch("http://localhost:5678/api/works")
         })
 
     })
-
-
 
 
