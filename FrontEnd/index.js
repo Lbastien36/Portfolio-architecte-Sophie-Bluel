@@ -148,7 +148,7 @@ const openModal = (e) => {
 
 // Réinitialisation de l'image de preview
 
-const resetimage = (e) => {
+const resetimage = () => {
     const preview = document.getElementById("preview")
     preview.src = ""
 }
@@ -170,6 +170,8 @@ const closemodal = (e) => {
 
     document.getElementById("formAjouterphoto").reset()
     resetimage()
+    document.getElementById("formAjouterphoto").addEventListener("submit", retourModale)
+
     document.querySelector(".labelphoto").setAttribute("style", "opacity:100;height:36px;position: static;")
     document.querySelector(".iconeimage").setAttribute("style", "display:block")
     document.querySelector(".jpg").setAttribute("style", "display:block")
@@ -182,7 +184,28 @@ const closemodal = (e) => {
     modale = null
 
 }
+//Bouton retour de la modale
 
+
+const retourModale = () => {
+
+
+    document.getElementById("formAjouterphoto").reset()
+    resetimage()
+    document.getElementById("formAjouterphoto").addEventListener("submit", retourModale)
+
+    document.querySelector(".labelphoto").setAttribute("style", "opacity:100;height:36px;position: static;")
+    document.querySelector(".iconeimage").setAttribute("style", "display:block")
+    document.querySelector(".jpg").setAttribute("style", "display:block")
+    document.querySelector(".boutonvalider").setAttribute("style", "background:#A7A7A7;width:237px; margin-top: 60px;")
+    document.querySelector(".erreur2").setAttribute("style", "display:none")
+    document.getElementById("nouvellediv").setAttribute("style", "display:none")
+    document.getElementById("cachergalleriemodale").setAttribute("style", "display:grid")
+
+}
+document.querySelector(".retourmodale").addEventListener("click", () => {
+    retourModale()
+})
 //Fonction qui empêche la propagation du click sur toute la modale
 
 const stopPropagation = (e) => {
@@ -190,6 +213,7 @@ const stopPropagation = (e) => {
 }
 
 document.querySelector(".modifier").addEventListener("click", openModal)
+
 
 //Ajout des travaux dans la modale
 
@@ -219,7 +243,6 @@ fetch("http://localhost:5678/api/works")
 
 
                 bouton.addEventListener("click", (e) => {
-                    console.log("bla")
                     const token = localStorage.getItem("token")
 
                     const id = e.target.getAttribute("id")
@@ -234,7 +257,6 @@ fetch("http://localhost:5678/api/works")
                         fetch("http://localhost:5678/api/works/" + id, {
 
                             method: "DELETE",
-                            body: null,
                             headers: {
                                 "Content-Type": "application/json",
                                 'Authorization': 'Bearer ' + token,
@@ -290,16 +312,13 @@ fetch("http://localhost:5678/api/works")
                 document.querySelector(".jpg").setAttribute("style", "display:none")
             })
 
-
-
-
             //Mise en place du formulaire de soumission de travaux
 
-            document.getElementById("photo")
-            document.getElementById("titre")
-            document.getElementById("categorie")
 
             document.querySelectorAll(".form").forEach(form => form.addEventListener("change", () => {
+
+                
+
                 if (photo.value !== "" && titre.value !== "" && categorie.value !== "") {
                     document.querySelector(".boutonvalider").setAttribute("style", "background:#1D6154;width:237px; margin-top: 60px;")
                 } else {
@@ -307,33 +326,31 @@ fetch("http://localhost:5678/api/works")
                 }
             }))
 
-            const formAjouterphoto = document.getElementById("formAjouterphoto")
 
-            formAjouterphoto.addEventListener("submit", (e) => {
+            document.getElementById("formAjouterphoto").addEventListener("submit", (e) => {
 
                 e.preventDefault()
 
                 const token = localStorage.getItem("token")
 
                 let input = document.querySelector('input[type="file"]')
-                console.log(input.files)
+
                 const formData = new FormData()
 
                 formData.append('image', input.files[0])
                 formData.append('title', titre.value)
                 formData.append('category', categorie.value)
 
-                const photoform = document.getElementById("photo").value
-                const titreform = document.getElementById("titre").value
-                const categorieform = document.getElementById("categorie").value
+                
 
                 //Vérification si le formulaire est remplit correctement
 
-                if (photoform == "" || titreform == "" || categorieform == "") {
+                if (photo.value == "" || titre.value == "" || categorie.value == "") {
 
                     document.querySelector(".erreur2").setAttribute("style", "display:block")
 
                 } else {
+
                     //Ajout de travaux sur l'API
 
                     fetch("http://localhost:5678/api/works", {
@@ -372,6 +389,7 @@ fetch("http://localhost:5678/api/works")
                             console.log(data)
 
                             Suppression()
+                            retourModale()
                         })
                 }
 
@@ -379,20 +397,8 @@ fetch("http://localhost:5678/api/works")
             })
 
 
-            //Bouton retour de la modale
 
-            document.querySelector(".retourmodale").addEventListener("click", () => {
-                document.getElementById("formAjouterphoto").reset()
-                resetimage()
-                document.querySelector(".labelphoto").setAttribute("style", "opacity:100;height:36px;position: static;")
-                document.querySelector(".iconeimage").setAttribute("style", "display:block")
-                document.querySelector(".jpg").setAttribute("style", "display:block")
-                document.querySelector(".boutonvalider").setAttribute("style", "background:#A7A7A7;width:237px; margin-top: 60px;")
-                document.querySelector(".erreur2").setAttribute("style", "display:none")
 
-                document.getElementById("nouvellediv").setAttribute("style", "display:none")
-                document.getElementById("cachergalleriemodale").setAttribute("style", "display:grid")
-            })
 
         })
 
