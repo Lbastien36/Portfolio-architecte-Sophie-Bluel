@@ -123,6 +123,8 @@ if (localStorage.getItem("token")) {
 
     document.querySelector(".modifier").setAttribute("style", "display:block")
 
+    document.querySelector(".iconeprojet").setAttribute("style","display: block")
+
     document.querySelector(".categories").setAttribute("style", "display:none")
 
     console.log(localStorage)
@@ -348,7 +350,7 @@ fetch("http://localhost:5678/api/works")
                 if (photo.value == "" || titre.value == "" || categorie.value == "") {
 
                     document.querySelector(".erreur2").setAttribute("style", "display:block")
-
+                    
                 } else {
 
                     //Ajout de travaux sur l'API
