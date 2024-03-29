@@ -62,7 +62,7 @@ const filter = () => {
 
                     if (e.target.dataset.id != 0) {
                         result = data.filter((figure) => figure.categoryId == e.target.dataset.id);
-
+                        
                     }
 
                     let affichage = "";
@@ -72,7 +72,7 @@ const filter = () => {
                         affichage += `
                     <figure>
                             <img src="${figure.imageUrl}" alt="${figure.title}">
-                            <figcaption>"${figure.title}</figcaption>
+                            <figcaption>u${figure.title}</figcaption>
                     </figure> `
 
                     }
@@ -82,12 +82,19 @@ const filter = () => {
             console.log(e)
             console.log(e.target.dataset.id)
             console.log("click")
+
+
+            
         })
         console.log("coucou", bouton)
     })
 }
 console.log(travaux)
 console.log(filtre)
+
+
+
+
 
 //Mise en place du mode édition
 
