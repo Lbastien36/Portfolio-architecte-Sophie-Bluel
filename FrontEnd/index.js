@@ -29,13 +29,13 @@ let filtre = fetch("http://localhost:5678/api/categories")
     .then(res => res.json())
     .then(data => {
 
-        let filtrebouton = "<p class=categoriebouton_active data-id=0 id=categorie>Tous</p>";
+        let filtrebouton = "<h3 class=categoriebouton_active data-id=0>Tous</h3>";
 
         for (let categories of data) {
 
             filtrebouton += `
 
-            <p class=categoriebouton id=categorie data-id=${categories.id}>${categories.name} </p>
+            <h3 class=categoriebouton data-id=${categories.id}>${categories.name} </h3>
             `
 
         }
@@ -46,12 +46,12 @@ let filtre = fetch("http://localhost:5678/api/categories")
 
         //Changement de couleur quand catégorie clické
 
-        document.querySelectorAll("[id='categorie']").forEach(bouton => {
+        document.querySelectorAll("h3").forEach(bouton => {
             bouton.addEventListener("click", (e) => {
-                let categorie = document.querySelectorAll("[id='categorie']")
+                let categorieB = document.querySelectorAll("h3")
 
-                for (let i = 0; i < categorie.length; i++) {
-                    categorie[i].setAttribute("class", "categoriebouton")
+                for (let i = 0; i < categorieB.length; i++) {
+                    categorieB[i].setAttribute("class", "categoriebouton")
                 }
                 document.querySelector(`[data-id="${e.target.dataset.id}"]`).setAttribute("class", "categoriebouton_active")
 
@@ -67,7 +67,7 @@ let filtre = fetch("http://localhost:5678/api/categories")
  * Fonction pour mise en place des boutons et filtrage
  */
 const filter = () => {
-    document.querySelectorAll("[id='categorie']").forEach(bouton => {
+    document.querySelectorAll("h3").forEach(bouton => {
 
         bouton.addEventListener("click", (e) => {
             fetch("http://localhost:5678/api/works")
@@ -349,7 +349,41 @@ fetch("http://localhost:5678/api/works")
                 } else {
                     document.querySelector(".boutonvalider").setAttribute("style", "background:#A7A7A7;width:237px; margin-top: 60px;")
                 }
+
+
             }))
+
+            // Vérification si la taille de l'image est inférieur à 4mb
+            // Et si il s'agit du bon format (png, jpg ou jp)
+
+            const photoI = document.querySelector('input[type="file"]')
+
+            photoI.addEventListener("change", () => {
+
+                if (photoI.files[0].size > 4000000) {
+                    photoI.value = ""
+                    resetimage()
+
+                    document.querySelector(".labelphoto").setAttribute("style", "opacity:100;height:36px;position: static;")
+                    document.querySelector(".iconeimage").setAttribute("style", "display:block")
+                    document.querySelector(".jpg").setAttribute("style", "display:block")
+
+
+                }
+
+                if (photoI.files[0].type.match("image/png") || photoI.files[0].type.match("image/jpg") || photoI.files[0].type.match("image/jpeg")) { }
+                else {
+                    photoI.value = ""
+                    resetimage()
+
+                    document.querySelector(".labelphoto").setAttribute("style", "opacity:100;height:36px;position: static;")
+                    document.querySelector(".iconeimage").setAttribute("style", "display:block")
+                    document.querySelector(".jpg").setAttribute("style", "display:block")
+                }
+
+
+            })
+
 
 
             document.getElementById("formAjouterphoto").addEventListener("submit", (e) => {
