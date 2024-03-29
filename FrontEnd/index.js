@@ -29,13 +29,13 @@ let filtre = fetch("http://localhost:5678/api/categories")
     .then(res => res.json())
     .then(data => {
 
-        let filtrebouton = "<p class=categoriebouton data-id=0>Tous</p>";
+        let filtrebouton = "<p class=categoriebouton_active data-id=0 id=categorie>Tous</p>";
 
         for (let categories of data) {
 
             filtrebouton += `
 
-            <p class=categoriebouton data-id=${categories.id}>${categories.name} </p>
+            <p class=categoriebouton id=categorie data-id=${categories.id}>${categories.name} </p>
             `
 
         }
@@ -43,13 +43,31 @@ let filtre = fetch("http://localhost:5678/api/categories")
         console.log(categories)
 
         filter()
+
+        //Changement de couleur quand catégorie clické
+
+        document.querySelectorAll("[id='categorie']").forEach(bouton => {
+            bouton.addEventListener("click", (e) => {
+                let categorie = document.querySelectorAll("[id='categorie']")
+
+                for (let i = 0; i < categorie.length; i++) {
+                    categorie[i].setAttribute("class", "categoriebouton")
+                }
+                document.querySelector(`[data-id="${e.target.dataset.id}"]`).setAttribute("class", "categoriebouton_active")
+
+
+            })
+        })
+
+
+
     })
 
 /**
  * Fonction pour mise en place des boutons et filtrage
  */
 const filter = () => {
-    document.querySelectorAll(".categoriebouton").forEach(bouton => {
+    document.querySelectorAll("[id='categorie']").forEach(bouton => {
 
         bouton.addEventListener("click", (e) => {
             fetch("http://localhost:5678/api/works")
@@ -62,7 +80,7 @@ const filter = () => {
 
                     if (e.target.dataset.id != 0) {
                         result = data.filter((figure) => figure.categoryId == e.target.dataset.id);
-                        
+
                     }
 
                     let affichage = "";
@@ -72,7 +90,7 @@ const filter = () => {
                         affichage += `
                     <figure>
                             <img src="${figure.imageUrl}" alt="${figure.title}">
-                            <figcaption>u${figure.title}</figcaption>
+                            <figcaption>${figure.title}</figcaption>
                     </figure> `
 
                     }
@@ -83,8 +101,6 @@ const filter = () => {
             console.log(e.target.dataset.id)
             console.log("click")
 
-
-            
         })
         console.log("coucou", bouton)
     })
@@ -130,7 +146,7 @@ if (localStorage.getItem("token")) {
 
     document.querySelector(".modifier").setAttribute("style", "display:block")
 
-    document.querySelector(".iconeprojet").setAttribute("style","display: block")
+    document.querySelector(".iconeprojet").setAttribute("style", "display: block")
 
     document.querySelector(".categories").setAttribute("style", "display:none")
 
@@ -326,7 +342,7 @@ fetch("http://localhost:5678/api/works")
 
             document.querySelectorAll(".form").forEach(form => form.addEventListener("change", () => {
 
-                
+
 
                 if (photo.value !== "" && titre.value !== "" && categorie.value !== "") {
                     document.querySelector(".boutonvalider").setAttribute("style", "background:#1D6154;width:237px; margin-top: 60px;")
@@ -350,14 +366,14 @@ fetch("http://localhost:5678/api/works")
                 formData.append('title', titre.value)
                 formData.append('category', categorie.value)
 
-                
+
 
                 //Vérification si le formulaire est remplit correctement
 
                 if (photo.value == "" || titre.value == "" || categorie.value == "") {
 
                     document.querySelector(".erreur2").setAttribute("style", "display:block")
-                    
+
                 } else {
 
                     //Ajout de travaux sur l'API
